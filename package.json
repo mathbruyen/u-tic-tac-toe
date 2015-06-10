@@ -1,0 +1,25 @@
+{
+  "name": "utictactoe",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Ultimate tic-tac-toe",
+  "scripts": {
+    "frontend": "npm run clean && npm run copy-statics && npm run build-app",
+    "clean": "rm -rfv _webapp",
+    "copy-statics": "mkdir _webapp && cp -rv static/* _webapp",
+    "build-app": "browserify app.js --outfile _webapp/app.js",
+
+    "server": "http-server -p 8080 _webapp",
+
+    "ghpages": "ORIGIN=$(git config --get remote.origin.url) BRANCH=$(date +%s) && cd _webapp && git init && git checkout --orphan $BRANCH && git add . && git commit -m Update && git push -f $ORIGIN $BRANCH:gh-pages && cd .."
+  },
+  "author": "Mathieu Bruyen <code@mais-h.eu>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^5.1.10",
+    "http-server": "^0.8.0",
+    "babelify": "^6.0.2",
+    "browserify": "^9.0.8",
+    "react": "^0.13.2"
+  }
+}

@@ -1,0 +1,16 @@
+
+html, body {
+  font-size : 30px;
+  height : 100%;
+  margin: 0;
+}
+
+td {
+  border : 1px solid black;
+
+  min-width : 2em;
+  height : 2em;
+
+  text-align : center;
+  vertical-align : middle;
+}
