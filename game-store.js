@@ -129,7 +129,7 @@ module.exports = (dispatcher) => {
       }
 
       // TODO draw
-      turn = (turn === 'X') ? 'Y' : 'X';
+      turn = (turn === 'X') ? 'O' : 'X';
     }
   });
 
