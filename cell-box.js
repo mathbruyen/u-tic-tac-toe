@@ -29,7 +29,7 @@ module.exports = React.createClass({
       return React.DOM.div(null, this.state.isWonBy);
     } else {
       var border = this.state.canPlayIn ? '1px solid red' : '1px solid black';
-      return React.DOM.table({ style : { border } }, this.props.game.generateRow(this._makeCellRow));
+      return React.DOM.table({ style : { border } }, React.DOM.tbody(null, this.props.game.generateRow(this._makeCellRow)));
     }
   },
 

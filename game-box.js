@@ -11,7 +11,7 @@ module.exports = React.createClass({
     return React.DOM.div(
       null,
       React.createElement(TurnBox, { game : this.props.game, dispatch : this.props.dispatch }),
-      React.DOM.table(null, this.props.game.generateRow(this._makeGameRow)),
+      React.DOM.table(null, React.DOM.tbody(null, this.props.game.generateRow(this._makeGameRow))),
       React.DOM.button({ onClick : this._startGame }, 'Start new game')
     );
   },
