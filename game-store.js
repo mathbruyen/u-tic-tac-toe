@@ -4,34 +4,46 @@ var newStore = require('./store');
 
 module.exports = (dispatcher) => {
 
+  var size = 3;
+
+  function generateRow(fn) {
+    var a = new Array(size);
+    for (var x = 0; x < size; x++) {
+      a[x] = fn(x);
+    }
+    return a;
+  }
+
+  function generateGrid(fn) {
+    return generateRow(y => generateRow(x => fn(x, y)));
+  }
+
   function emptyGame() {
     return {
       canPlayIn : true,
       isWonBy : null,
-      cells : [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-      ]
+      cells : generateGrid(() => null)
     };
   }
 
   function emptyUltimateGame() {
     return {
-      games : [
-        [emptyGame(), emptyGame(), emptyGame()],
-        [emptyGame(), emptyGame(), emptyGame()],
-        [emptyGame(), emptyGame(), emptyGame()]
-      ]
+      games : generateGrid(emptyGame)
     };
   }
 
-  var ultimate = emptyUltimateGame();
-  var turn = 'X';
+  var ultimate;
+  var turn;
+
+  function start() {
+    ultimate = emptyUltimateGame();
+    turn = 'X';
+  }
+  start();
 
   function isFull(game) {
-    for (var i = 0; i < 3; i++) {
-      for (var j = 0; j < 3; j++) {
+    for (var i = 0; i < size; i++) {
+      for (var j = 0; j < size; j++) {
         if (!game.cells[i][j]) {
           return false;
         }
@@ -43,41 +55,41 @@ module.exports = (dispatcher) => {
   function isWinning(game, expected, cellx, celly) {
     var i;
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < size; i++) {
       if (game.cells[celly][i] !== expected) {
         break;
       }
-      if (i === 2) {
+      if (i === size - 1) {
         return true;
       }
     }
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < size; i++) {
       if (game.cells[i][cellx] !== expected) {
         break;
       }
-      if (i === 2) {
+      if (i === size - 1) {
         return true;
       }
     }
 
     if (cellx === celly) {
-      for (i = 0; i < 3; i++) {
+      for (i = 0; i < size; i++) {
         if (game.cells[i][i] !== expected) {
           break;
         }
-        if (i === 2) {
+        if (i === size - 1) {
           return true;
         }
       }
     }
 
-    if (cellx === 2 - celly) {
-      for (i = 0; i < 3; i++) {
-        if (game.cells[i][2 - i] !== expected) {
+    if (cellx === size - 1 - celly) {
+      for (i = 0; i < size; i++) {
+        if (game.cells[i][size - 1 - i] !== expected) {
           break;
         }
-        if (i === 2) {
+        if (i === size - 1) {
           return true;
         }
       }
@@ -93,10 +105,7 @@ module.exports = (dispatcher) => {
   }
 
   var { onChange, offChange } = newStore(dispatcher, {
-    NEW_GAME_STARTED : (action) => {
-      ultimate = emptyUltimateGame();
-      turn = 'X';
-    },
+    NEW_GAME_STARTED : start,
     PLAYED_CELL : (action) => {
       var game = ultimate.games[action.gamey][action.gamex], i, j, t;
       game.cells[action.celly][action.cellx] = turn;
@@ -105,8 +114,8 @@ module.exports = (dispatcher) => {
         game.isWonBy = turn;
       }
 
-      for (i = 0; i < 3; i++) {
-        for (j = 0; j < 3; j++) {
+      for (i = 0; i < size; i++) {
+        for (j = 0; j < size; j++) {
           ultimate.games[i][j].canPlayIn = false;
         }
       }
@@ -114,8 +123,8 @@ module.exports = (dispatcher) => {
       var target = ultimate.games[action.celly][action.cellx];
       var draw = true;
       if (target.isWonBy || isFull(target)) {
-        for (i = 0; i < 3; i++) {
-          for (j = 0; j < 3; j++) {
+        for (i = 0; i < size; i++) {
+          for (j = 0; j < size; j++) {
             t = ultimate.games[i][j];
             t.canPlayIn = !(t.isWonBy || isFull(t));
             if (t.canPlayIn) {
@@ -133,5 +142,5 @@ module.exports = (dispatcher) => {
     }
   });
 
-  return { onChange, offChange, getTurn, getGame };
+  return { onChange, offChange, getTurn, getGame, generateRow };
 };

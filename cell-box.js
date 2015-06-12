@@ -28,28 +28,21 @@ module.exports = React.createClass({
     if (this.state.isWonBy) {
       return React.DOM.div(null, this.state.isWonBy);
     } else {
-      return React.DOM.table(
-          { style : { border : this.state.canPlayIn ? '1px solid red' : '1px solid black' } },
-          this._makeCellRow(0),
-          this._makeCellRow(1),
-          this._makeCellRow(2)
-        );
+      var border = this.state.canPlayIn ? '1px solid red' : '1px solid black';
+      return React.DOM.table({ style : { border } }, this.props.game.generateRow(this._makeCellRow));
     }
   },
 
-  _makeCellRow : function (celly) {
-    return React.DOM.tr(null, this._makeCell(0, celly), this._makeCell(1, celly), this._makeCell(2, celly));
+  _makeCellRow : function (y) {
+    return React.DOM.tr({ key : y }, this.props.game.generateRow(x => this._makeCell(x, y)));
   },
 
-  _makeCell : function (cellx, celly) {
-    var owner = this.state.cells[celly][cellx];
+  _makeCell : function (x, y) {
+    var owner = this.state.cells[y][x];
     if (!owner && this.state.canPlayIn) {
-      return React.DOM.td({
-        onClick : this._playCell.bind(this, cellx, celly),
-        style : { cursor : 'pointer' }
-      }, owner);
+      return React.DOM.td({ key : x, onClick : this._playCell.bind(this, x, y), style : { cursor : 'pointer' } }, owner);
     } else {
-      return React.DOM.td(null, owner);
+      return React.DOM.td({ key : x }, owner);
     }
   },
 
