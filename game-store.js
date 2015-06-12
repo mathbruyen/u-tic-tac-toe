@@ -4,7 +4,13 @@ var newStore = require('./store');
 
 module.exports = (dispatcher) => {
 
-  var size = 3;
+  var size;
+  var ultimate;
+  var turn;
+
+  function getSize() {
+    return size;
+  }
 
   function generateRow(fn) {
     var a = new Array(size);
@@ -32,14 +38,11 @@ module.exports = (dispatcher) => {
     };
   }
 
-  var ultimate;
-  var turn;
-
-  function start() {
+  function start(s) {
+    size = s;
     ultimate = emptyUltimateGame();
     turn = 'X';
   }
-  start();
 
   function isFull(game) {
     for (var i = 0; i < size; i++) {
@@ -105,7 +108,9 @@ module.exports = (dispatcher) => {
   }
 
   var { onChange, offChange } = newStore(dispatcher, {
-    NEW_GAME_STARTED : start,
+    NEW_GAME_STARTED : (action) => {
+      start(action.size);
+    },
     PLAYED_CELL : (action) => {
       var game = ultimate.games[action.gamey][action.gamex], i, j, t;
       game.cells[action.celly][action.cellx] = turn;
@@ -142,5 +147,7 @@ module.exports = (dispatcher) => {
     }
   });
 
-  return { onChange, offChange, getTurn, getGame, generateRow };
+  start(3);
+
+  return { onChange, offChange, getTurn, getGame, generateRow, getSize };
 };

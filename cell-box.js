@@ -17,7 +17,10 @@ module.exports = React.createClass({
   },
 
   _onChange : function (counter) {
-    this.replaceState(this._getState());
+    // TODO ignore updates if the size of the grid makes this cell disappear
+    if (this.props.x < this.props.game.getSize() && this.props.y < this.props.game.getSize()) {
+      this.replaceState(this._getState());
+    }
   },
 
   _getState : function () {
