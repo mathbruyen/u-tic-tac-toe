@@ -12,7 +12,7 @@ module.exports = React.createClass({
       null,
       React.createElement(TurnBox, { game : this.props.game, dispatch : this.props.dispatch }),
       React.DOM.table(null, this._makeGameRow(0), this._makeGameRow(1), this._makeGameRow(2)),
-      React.DOM.span({ onClick : this._startGame }, 'Start new game')
+      React.DOM.button({ onClick : this._startGame }, 'Start new game')
     );
   },
 
@@ -24,7 +24,7 @@ module.exports = React.createClass({
     return React.DOM.td(null, React.createElement(CellBox, { game : this.props.game, dispatch : this.props.dispatch, x : gamex, y : gamey }));
   },
 
-  _startGame : function (child) {
+  _startGame : function () {
     this.props.dispatch({ action : 'NEW_GAME_STARTED' });
   }
 });
