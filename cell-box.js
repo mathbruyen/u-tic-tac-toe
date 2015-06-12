@@ -44,7 +44,10 @@ module.exports = React.createClass({
   _makeCell : function (cellx, celly) {
     var owner = this.state.cells[celly][cellx];
     if (!owner && this.state.canPlayIn) {
-      return React.DOM.td({ onClick : this._playCell.bind(this, cellx, celly) }, owner);
+      return React.DOM.td({
+        onClick : this._playCell.bind(this, cellx, celly),
+        style : { cursor : 'pointer' }
+      }, owner);
     } else {
       return React.DOM.td(null, owner);
     }
