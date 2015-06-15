@@ -5,11 +5,26 @@ html, body {
   margin: 0;
 }
 
-td {
-  border : 1px solid black;
+table {
+  border-collapse : collapse;
+}
 
+tr + tr {
+  border-top : 5px inset black;
+}
+
+td + td {
+  border-left : 5px inset black;
+}
+
+.playable {
+  border : 1px dotted red;
+}
+
+td {
   min-width : 2em;
   height : 2em;
+  padding : 5px;
 
   text-align : center;
   vertical-align : middle;
