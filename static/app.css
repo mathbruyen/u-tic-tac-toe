@@ -1,12 +1,53 @@
 
-html, body {
+html {
+  text-align : center;
   font-size : 30px;
-  height : 100%;
-  margin: 0;
+  margin : 0;
+}
+
+body {
+  margin : 0 auto;
+  width : 100%;
+  max-width : 20em;
+}
+
+/* http://stackoverflow.com/questions/1495407/css-maintain-div-aspect-ratio */
+table {
+  width : 100%;
+  padding-bottom : 100%;
+  position : relative;
+}
+tbody {
+  position : absolute;
+  top : 0;
+  bottom : 0;
+  left : 0;
+  right : 0;
 }
 
 table {
-  border-collapse : collapse;
+  display : block;
+}
+
+tbody {
+  display : flex;
+  flex-direction: column;
+  flex-wrap : wrap;
+
+  margin : 5px;
+}
+
+tr {
+  flex : 1;
+
+  display : flex;
+  flex-direction: row;
+  flex-wrap : wrap;
+}
+
+td {
+  display : block;
+  flex : 1;
 }
 
 tr + tr {
@@ -19,13 +60,4 @@ td + td {
 
 .playable {
   border : 1px dotted red;
-}
-
-td {
-  min-width : 2em;
-  height : 2em;
-  padding : 5px;
-
-  text-align : center;
-  vertical-align : middle;
 }
