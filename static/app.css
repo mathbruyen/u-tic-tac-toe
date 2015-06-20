@@ -1,24 +1,43 @@
 
+/* Game taking full width up to reasonnable size */
 html {
   text-align : center;
   font-size : 30px;
   margin : 0;
   font-family : 'Roboto', sans-serif;
+  background : linear-gradient(to bottom, #3f51b5 3em, #e8eaf6 3.1em);
+  min-height : 100%;
 }
-
 body {
   margin : 0 auto;
   width : 100%;
   max-width : 20em;
 }
+body > div > table {
+  box-shadow : 1px 1px 2px 1px #9e9e9e;
+}
 
-/* http://stackoverflow.com/questions/1495407/css-maintain-div-aspect-ratio */
+/* Turn box */
+h1 {
+  color : #FFF;
+  opacity : 0.87;
+  margin : 0;
+  padding : 0;
+  font-size : 1em;
+}
+
+/**
+ * Board with 1:1 aspect ration taking full width
+ * http://stackoverflow.com/questions/1495407/css-maintain-div-aspect-ratio
+ */
 table {
+  background-color : #c5cae9;
+  display : block;
   width : 100%;
   padding-bottom : 100%;
   position : relative;
 }
-tbody {
+table > * {
   position : absolute;
   top : 0;
   bottom : 0;
@@ -26,37 +45,41 @@ tbody {
   right : 0;
 }
 
-table {
-  display : block;
-}
-
+/* Rows of evenly distributed height */
 tbody {
   display : flex;
   flex-flow: column nowrap;
 
   margin : 5px;
 }
-
-tr {
+tbody > * {
   flex : 1 1 1px;
+}
 
+/* Cells of evenly distributed width */
+tr {
   display : flex;
   flex-flow: row nowrap;
 }
-
-td {
-  display : block;
+tr > * {
   flex : 1 1 1px;
 }
 
+/* Centered cell content */
+td {
+  display : flex;
+}
+td > * {
+  margin : auto;
+}
+
+/* Visible grid */
 tr + tr {
-  border-top : 5px inset black;
+  border-top : 5px inset #2C3E50;
 }
-
 td + td {
-  border-left : 5px inset black;
+  border-left : 5px inset #2C3E50;
 }
-
 .playable {
-  outline : 1px dotted red;
+  outline : 3px dotted #C0392B;
 }

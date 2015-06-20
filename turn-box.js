@@ -25,6 +25,6 @@ module.exports = React.createClass({
   },
 
   render : function () {
-    return React.DOM.span(null, this.state.player + "'s turn");
+    return React.DOM.h1(null, this.state.player + "'s turn");
   }
 });

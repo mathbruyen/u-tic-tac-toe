@@ -42,10 +42,11 @@ module.exports = React.createClass({
 
   _makeCell : function (x, y) {
     var owner = this.state.cells[y][x];
+    var name = React.DOM.span(null, owner);
     if (!owner && this.state.canPlayIn) {
-      return React.DOM.td({ key : x, onClick : this._playCell.bind(this, x, y), style : { cursor : 'pointer' } }, '\u00a0');
+      return React.DOM.td({ key : x, onClick : this._playCell.bind(this, x, y), style : { cursor : 'pointer' } }, name);
     } else {
-      return React.DOM.td({ key : x }, owner || '\u00a0');
+      return React.DOM.td({ key : x }, name);
     }
   },
 
