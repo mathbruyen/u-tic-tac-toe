@@ -21,10 +21,16 @@ module.exports = React.createClass({
   },
 
   _getState : function () {
-    return { player : this.props.game.getTurn() };
+    if (this.props.game.isDraw()) {
+      return { message : 'Draw!' };
+    } else if (this.props.game.getWinner()) {
+      return { message : this.props.game.getWinner() + ' won!' };
+    } else {
+      return {  message : this.props.game.getTurn() + '\'s turn' };
+    }
   },
 
   render : function () {
-    return React.DOM.h1(null, this.state.player + "'s turn");
+    return React.DOM.h1(null, this.state.message);
   }
 });

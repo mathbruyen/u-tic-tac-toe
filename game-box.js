@@ -3,7 +3,7 @@
 var React = require('react');
 
 var CellBox = require('./cell-box');
-var TurnBox = require('./turn-box');
+var StatusBox = require('./status-box');
 
 module.exports = React.createClass({
 
@@ -30,7 +30,7 @@ module.exports = React.createClass({
   render : function () {
     return React.DOM.div(
       null,
-      React.createElement(TurnBox, { game : this.props.game, dispatch : this.props.dispatch }),
+      React.createElement(StatusBox, { game : this.props.game, dispatch : this.props.dispatch }),
       React.DOM.table(null, React.DOM.tbody(null, this.props.game.generateRow(this._makeGameRow))),
       React.DOM.input({ type : 'number', step : 1, min : 1, max : 6, value : this.state.size, onChange : this._changeSize }),
       React.DOM.button({ onClick : this._startGame }, 'Start new game')

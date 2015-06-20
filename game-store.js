@@ -6,7 +6,6 @@ module.exports = (dispatcher) => {
 
   var size;
   var ultimate;
-  var turn;
 
   function getSize() {
     return size;
@@ -34,14 +33,16 @@ module.exports = (dispatcher) => {
 
   function emptyUltimateGame() {
     return {
-      games : generateGrid(emptyGame)
+      turn : 'X',
+      isWonBy : null,
+      isDraw : false,
+      cells : generateGrid(emptyGame)
     };
   }
 
   function start(s) {
     size = s;
     ultimate = emptyUltimateGame();
-    turn = 'X';
   }
 
   function isFull(game) {
@@ -55,11 +56,11 @@ module.exports = (dispatcher) => {
     return true;
   }
 
-  function isWinning(game, expected, cellx, celly) {
+  function isWinning(game, matches, cellx, celly) {
     var i;
 
     for (i = 0; i < size; i++) {
-      if (game.cells[celly][i] !== expected) {
+      if (!matches(game.cells[celly][i])) {
         break;
       }
       if (i === size - 1) {
@@ -68,7 +69,7 @@ module.exports = (dispatcher) => {
     }
 
     for (i = 0; i < size; i++) {
-      if (game.cells[i][cellx] !== expected) {
+      if (!matches(game.cells[i][cellx])) {
         break;
       }
       if (i === size - 1) {
@@ -78,7 +79,7 @@ module.exports = (dispatcher) => {
 
     if (cellx === celly) {
       for (i = 0; i < size; i++) {
-        if (game.cells[i][i] !== expected) {
+        if (!matches(game.cells[i][i])) {
           break;
         }
         if (i === size - 1) {
@@ -89,7 +90,7 @@ module.exports = (dispatcher) => {
 
     if (cellx === size - 1 - celly) {
       for (i = 0; i < size; i++) {
-        if (game.cells[i][size - 1 - i] !== expected) {
+        if (!matches(game.cells[i][size - 1 - i])) {
           break;
         }
         if (i === size - 1) {
@@ -97,14 +98,24 @@ module.exports = (dispatcher) => {
         }
       }
     }
+
+    return false;
   }
 
   function getTurn() {
-    return turn;
+    return ultimate.turn;
+  }
+
+  function isDraw() {
+    return ultimate.isDraw;
+  }
+
+  function getWinner() {
+    return ultimate.isWonBy;
   }
 
   function getGame(x, y) {
-    return ultimate.games[y][x];
+    return ultimate.cells[y][x];
   }
 
   var { onChange, offChange } = newStore(dispatcher, {
@@ -112,42 +123,46 @@ module.exports = (dispatcher) => {
       start(action.size);
     },
     PLAYED_CELL : (action) => {
-      var game = ultimate.games[action.gamey][action.gamex], i, j, t;
-      game.cells[action.celly][action.cellx] = turn;
+      var game = ultimate.cells[action.gamey][action.gamex], i, j, t;
+      game.cells[action.celly][action.cellx] = ultimate.turn;
 
-      if (isWinning(game, turn, action.cellx, action.celly)) {
-        game.isWonBy = turn;
+      if (isWinning(game, (x) => ultimate.turn === x, action.cellx, action.celly)) {
+        game.isWonBy = ultimate.turn;
+        if (isWinning(ultimate, (x) => ultimate.turn === x.isWonBy, action.gamex, action.gamey)) {
+          ultimate.isWonBy = ultimate.turn;
+        }
       }
 
       for (i = 0; i < size; i++) {
         for (j = 0; j < size; j++) {
-          ultimate.games[i][j].canPlayIn = false;
+          ultimate.cells[i][j].canPlayIn = false;
         }
       }
 
-      var target = ultimate.games[action.celly][action.cellx];
-      var draw = true;
-      if (target.isWonBy || isFull(target)) {
-        for (i = 0; i < size; i++) {
-          for (j = 0; j < size; j++) {
-            t = ultimate.games[i][j];
-            t.canPlayIn = !(t.isWonBy || isFull(t));
-            if (t.canPlayIn) {
-              draw = false;
+      if (!ultimate.isWonBy) {
+        var target = ultimate.cells[action.celly][action.cellx];
+        ultimate.isDraw = true;
+        if (target.isWonBy || isFull(target)) {
+          for (i = 0; i < size; i++) {
+            for (j = 0; j < size; j++) {
+              t = ultimate.cells[i][j];
+              t.canPlayIn = !(t.isWonBy || isFull(t));
+              if (t.canPlayIn) {
+                ultimate.isDraw = false;
+              }
             }
           }
+        } else {
+          target.canPlayIn = true;
+          ultimate.isDraw = false;
         }
-      } else {
-        target.canPlayIn = true;
-        draw = false;
       }
 
-      // TODO draw
-      turn = (turn === 'X') ? 'O' : 'X';
+      ultimate.turn = (ultimate.turn === 'X') ? 'O' : 'X';
     }
   });
 
   start(3);
 
-  return { onChange, offChange, getTurn, getGame, generateRow, getSize };
+  return { onChange, offChange, getTurn, isDraw, getWinner, getGame, generateRow, getSize };
 };
