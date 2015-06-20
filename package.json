@@ -4,13 +4,12 @@
   "version": "0.0.1",
   "description": "Ultimate tic-tac-toe",
   "scripts": {
-    "frontend": "npm run clean && npm run copy-statics && npm run build-app",
+    "frontend": "npm run clean && npm run copy-statics && npm run download-font && npm run build-app",
     "clean": "rm -rfv _webapp",
+    "download-font": "goofoffline outDir=_webapp outCss=fonts.css http://fonts.googleapis.com/css?family=Roboto:400",
     "copy-statics": "mkdir _webapp && cp -rv static/* _webapp",
     "build-app": "browserify app.js -t [ babelify ] --outfile _webapp/app.js",
-
     "server": "http-server -p 8080 _webapp",
-
     "ghpages": "ORIGIN=$(git config --get remote.origin.url) BRANCH=$(date +%s) && cd _webapp && git init && git checkout --orphan $BRANCH && git add . && git commit -m Update && git push -f $ORIGIN $BRANCH:gh-pages && cd .."
   },
   "author": "Mathieu Bruyen <code@mais-h.eu>",
@@ -20,6 +19,7 @@
     "http-server": "^0.8.0",
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
+    "google-fonts-offline": "^0.1.1",
     "react": "^0.13.2"
   }
 }
