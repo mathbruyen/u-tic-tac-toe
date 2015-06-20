@@ -5,8 +5,17 @@ html {
   font-size : 30px;
   margin : 0;
   font-family : 'Roboto', sans-serif;
-  background : linear-gradient(to bottom, #3f51b5 3em, #e8eaf6 3.1em);
+  background-color : #e8eaf6;
   min-height : 100%;
+}
+html::before {
+  position : absolute;
+  display : block;
+  height : 3em;
+  width : 100%;
+  background-color : #3f51b5;
+  box-shadow : 0 1px 2px 1px #9e9e9e;
+  content : "";
 }
 body {
   margin : 0 auto;
@@ -31,7 +40,8 @@ h1 {
  * http://stackoverflow.com/questions/1495407/css-maintain-div-aspect-ratio
  */
 table {
-  background-color : #c5cae9;
+  transition : background-color 0.2s;
+  background-color : #e8eaf6;
   display : block;
   width : 100%;
   padding-bottom : 100%;
@@ -81,5 +91,5 @@ td + td {
   border-left : 5px inset #2C3E50;
 }
 .playable {
-  outline : 3px dotted #C0392B;
+  background-color : #c5cae9;
 }
