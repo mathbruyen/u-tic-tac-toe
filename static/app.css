@@ -31,8 +31,7 @@ table {
 
 tbody {
   display : flex;
-  flex-direction: column;
-  flex-wrap : wrap;
+  flex-flow: column nowrap;
 
   margin : 5px;
 }
@@ -41,8 +40,7 @@ tr {
   flex : 1;
 
   display : flex;
-  flex-direction: row;
-  flex-wrap : wrap;
+  flex-flow: row nowrap;
 }
 
 td {
