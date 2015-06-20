@@ -37,7 +37,7 @@ tbody {
 }
 
 tr {
-  flex : 1;
+  flex : 1 1 1px;
 
   display : flex;
   flex-flow: row nowrap;
@@ -45,7 +45,7 @@ tr {
 
 td {
   display : block;
-  flex : 1;
+  flex : 1 1 1px;
 }
 
 tr + tr {
