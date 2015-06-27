@@ -2,6 +2,9 @@
 
 var React = require('react');
 
+var X = require('./cross-player');
+var O = require('./circle-player');
+
 module.exports = React.createClass({
 
   getInitialState : function () {
@@ -28,10 +31,11 @@ module.exports = React.createClass({
   },
 
   render : function () {
-    if (this.state.isWonBy) {
-      return React.DOM.div(null, this.state.isWonBy);
+    if (this.state.isWonBy === 'X') {
+      return React.createElement(X);
+    } else if (this.state.isWonBy === 'O') {
+      return React.createElement(O);
     } else {
-      var border = this.state.canPlayIn ? '1px solid red' : '1px solid black';
       return React.DOM.table({ className : this.state.canPlayIn ? 'playable' : 'locked' }, React.DOM.tbody(null, this.props.game.generateRow(this._makeCellRow)));
     }
   },
@@ -42,11 +46,14 @@ module.exports = React.createClass({
 
   _makeCell : function (x, y) {
     var owner = this.state.cells[y][x];
-    var name = React.DOM.span(null, owner);
     if (!owner && this.state.canPlayIn) {
-      return React.DOM.td({ key : x, onClick : this._playCell.bind(this, x, y), style : { cursor : 'pointer' } }, name);
+      return React.DOM.td({ key : x, onClick : this._playCell.bind(this, x, y), style : { cursor : 'pointer' } });
+    } else if (owner === 'X') {
+      return React.DOM.td({ key : x }, React.createElement(X));
+    } else if (owner === 'O') {
+      return React.DOM.td({ key : x }, React.createElement(O));
     } else {
-      return React.DOM.td({ key : x }, name);
+      return React.DOM.td({ key : x });
     }
   },
 
