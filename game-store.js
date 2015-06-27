@@ -26,15 +26,15 @@ module.exports = (dispatcher) => {
   function emptyGame() {
     return {
       canPlayIn : true,
-      isWonBy : null,
-      cells : generateGrid(() => null)
+      isWonBy : -1,
+      cells : generateGrid(() => -1)
     };
   }
 
   function emptyUltimateGame() {
     return {
-      turn : 'X',
-      isWonBy : null,
+      turn : 0,
+      isWonBy : -1,
       isDraw : false,
       cells : generateGrid(emptyGame)
     };
@@ -48,7 +48,7 @@ module.exports = (dispatcher) => {
   function isFull(game) {
     for (var i = 0; i < size; i++) {
       for (var j = 0; j < size; j++) {
-        if (!game.cells[i][j]) {
+        if (game.cells[i][j] < 0) {
           return false;
         }
       }
@@ -139,26 +139,26 @@ module.exports = (dispatcher) => {
         }
       }
 
-      if (!ultimate.isWonBy) {
+      if (ultimate.isWonBy < 0) {
         var target = ultimate.cells[action.celly][action.cellx];
         ultimate.isDraw = true;
-        if (target.isWonBy || isFull(target)) {
+        if ((target.isWonBy < 0) && !isFull(target)) {
+          target.canPlayIn = true;
+          ultimate.isDraw = false;
+        } else {
           for (i = 0; i < size; i++) {
             for (j = 0; j < size; j++) {
               t = ultimate.cells[i][j];
-              t.canPlayIn = !(t.isWonBy || isFull(t));
+              t.canPlayIn = (t.isWonBy < 0) && !isFull(t);
               if (t.canPlayIn) {
                 ultimate.isDraw = false;
               }
             }
           }
-        } else {
-          target.canPlayIn = true;
-          ultimate.isDraw = false;
         }
       }
 
-      ultimate.turn = (ultimate.turn === 'X') ? 'O' : 'X';
+      ultimate.turn = (ultimate.turn + 1) % 2;
     }
   });
 

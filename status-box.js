@@ -2,6 +2,8 @@
 
 var React = require('react');
 
+var players = ['X', 'O'];
+
 module.exports = React.createClass({
 
   getInitialState : function () {
@@ -23,10 +25,10 @@ module.exports = React.createClass({
   _getState : function () {
     if (this.props.game.isDraw()) {
       return { message : 'Draw!' };
-    } else if (this.props.game.getWinner()) {
-      return { message : this.props.game.getWinner() + ' won!' };
+    } else if (this.props.game.getWinner() >= 0) {
+      return { message : players[this.props.game.getWinner()] + ' won!' };
     } else {
-      return {  message : this.props.game.getTurn() + '\'s turn' };
+      return {  message : players[this.props.game.getTurn()] + '\'s turn' };
     }
   },
 
