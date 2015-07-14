@@ -1,38 +1,35 @@
 /* jshint node: true, esnext: true */
 
-var React = require('react');
+import React from 'react';
 
 var players = ['X', 'O'];
 
-module.exports = React.createClass({
+export default class StatusBox extends React.Component {
 
-  getInitialState : function () {
-    return this._getState();
-  },
+  constructor(props) {
+    super(props);
+    var getState = () => {
+      if (this.props.game.isDraw()) {
+        return { message : 'Draw!' };
+      } else if (this.props.game.getWinner() >= 0) {
+        return { message : players[this.props.game.getWinner()] + ' won!' };
+      } else {
+        return {  message : players[this.props.game.getTurn()] + '\'s turn' };
+      }
+    };
+    this.state = getState();
+    this._onChange = () => this.setState(getState());
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     this.props.game.onChange(this._onChange, this);
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.props.game.offChange(this._onChange, this);
-  },
+  }
 
-  _onChange : function (counter) {
-    this.replaceState(this._getState());
-  },
-
-  _getState : function () {
-    if (this.props.game.isDraw()) {
-      return { message : 'Draw!' };
-    } else if (this.props.game.getWinner() >= 0) {
-      return { message : players[this.props.game.getWinner()] + ' won!' };
-    } else {
-      return {  message : players[this.props.game.getTurn()] + '\'s turn' };
-    }
-  },
-
-  render : function () {
+  render() {
     return React.DOM.h1(null, this.state.message);
   }
-});
+}

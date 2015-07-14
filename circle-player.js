@@ -1,10 +1,10 @@
 /* jshint node: true, esnext: true */
 
-var React = require('react');
+import React from 'react';
 
-module.exports = React.createClass({
+export default class CirclePlayer extends React.Component {
 
-  render : function () {
+  render() {
     return React.DOM.div(null, 'O');
   }
-});
+}

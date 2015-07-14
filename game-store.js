@@ -1,8 +1,8 @@
 /* jshint node: true, esnext: true */
 
-var newStore = require('./store');
+import newStore from './store';
 
-module.exports = (dispatcher) => {
+export default (dispatcher) => {
 
   var size;
   var ultimate;

@@ -1,6 +1,6 @@
 /* jshint node: true, esnext: true */
 
-module.exports = (dispatcher, actions) => {
+export default (dispatcher, actions) => {
 
   var subscribers = [];
 

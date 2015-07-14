@@ -20,6 +20,7 @@
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
     "google-fonts-offline": "^0.1.1",
-    "react": "^0.13.2"
+    "react": "^0.14.0-beta1",
+    "react-dom": "^0.14.0-beta1"
   }
 }

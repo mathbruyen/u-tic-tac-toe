@@ -1,6 +1,6 @@
 /* jshint node: true, esnext: true */
 
-module.exports = () => {
+export default () => {
 
   var subscribers = [];
 
